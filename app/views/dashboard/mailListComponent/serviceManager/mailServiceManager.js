@@ -10,7 +10,7 @@ class MailServiceManager {
       this.mailService.getAllMails().then(
         res => {
           if (res.status == 200) {
-            resolve(res.data.response);
+            resolve(res.data.messages);
           } else {
             res.data ? reject(res.data.message) : reject(res.problem);
           }
@@ -22,3 +22,4 @@ class MailServiceManager {
     });
   }
 }
+export default MailServiceManager;

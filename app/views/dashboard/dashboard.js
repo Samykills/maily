@@ -1,17 +1,19 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { AppColors } from "theme";
+import { View } from "react-native";
 import SplashScreen from "react-native-splash-screen";
-
-class Dashboard extends React.Component {
+import MailList from "./mailListComponent/mailList";
+import NativeUi from "./nativeUiContentComponent/nativeUi";
+class Dashboard extends React.PureComponent {
   componentDidMount() {
     SplashScreen.hide();
   }
 
   render() {
     return (
-      <View>
-        <Text style={{ color: AppColors.primary }}>dashboard</Text>
+      <View style={{ flex: 1 }}>
+        <MailList />
+        {/* //below for native component */}
+        <NativeUi />
       </View>
     );
   }

@@ -17,7 +17,7 @@ import {
 } from "react-native";
 import AppRouter from "./app/appRouter";
 import { AppColors } from "theme";
-
+import { Root } from "native-base";
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 const StatusBarComponent = () => {
   return Platform.OS == "ios" ? (
@@ -40,10 +40,12 @@ const StatusBarComponent = () => {
 export default class App extends Component {
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBarComponent />
-        <AppRouter />
-      </SafeAreaView>
+      <Root>
+        <SafeAreaView style={styles.container}>
+          <StatusBarComponent />
+          <AppRouter />
+        </SafeAreaView>
+      </Root>
     );
   }
 }

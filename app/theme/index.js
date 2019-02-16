@@ -1,2 +1,3 @@
 import AppColors from "./colors";
-export { AppColors };
+import AppFonts from "./fonts";
+export { AppColors, AppFonts };

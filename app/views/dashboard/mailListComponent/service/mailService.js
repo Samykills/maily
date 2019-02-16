@@ -12,8 +12,8 @@ class MailService {
 
   getAllMails() {
     //url of the mocked service
-    let url = "5c67ec013800009114b10102";
-    return this.httpClient.postApi(url, data);
+    let url = "5c680f113800003318b10130";
+    return this.httpClient.getApi(url);
   }
 }
 
