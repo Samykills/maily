@@ -8,14 +8,40 @@
  */
 
 import React, { Component } from "react";
-import { StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  Platform,
+  View
+} from "react-native";
 import AppRouter from "./app/appRouter";
 import { AppColors } from "theme";
+
+const STATUSBAR_HEIGHT = StatusBar.currentHeight;
+const StatusBarComponent = () => {
+  return Platform.OS == "ios" ? (
+    <StatusBar
+      translucent
+      barStyle="light-content"
+      backgroundColor={AppColors.primary}
+    />
+  ) : (
+    <View style={{ height: STATUSBAR_HEIGHT }}>
+      <StatusBar
+        translucent
+        barStyle="light-content"
+        backgroundColor={AppColors.primary}
+      />
+    </View>
+  );
+};
+
 export default class App extends Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="light-content" translucent />
+        <StatusBarComponent />
         <AppRouter />
       </SafeAreaView>
     );
