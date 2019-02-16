@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "debug-android": "cd android && ./gradlew clean && cd .. && react-native run-android",
+    "release-android": "cd android && ./gradlew clean &&./gradlew assembleRelease && cd .."
   },
   "dependencies": {
     "react": "16.6.3",
     "react-native": "0.58.4",
     "react-native-easystore": "^1.0.2",
     "react-native-router-flux": "4.0.6",
+    "react-native-splash-screen": "^3.2.0",
     "uRnFramework-basic-components": "git+https://ullas_gupta:ullas2000@bitbucket.org/ugaj/urnframework-basic-components.git"
   },
   "devDependencies": {
