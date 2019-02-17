@@ -14,17 +14,57 @@ import {
 } from "native-base";
 import { AppColors, AppFonts } from "theme";
 import MailServiceManager from "./serviceManager/mailServiceManager";
-import { totalSize } from "react-native-dimension";
-import { Loader, DateUtil } from "uRnFramework-basic-components";
+import { totalSize, width, height } from "react-native-dimension";
+import { Loader, DateUtil, Touchable } from "uRnFramework-basic-components";
 import ViewConstants from "../../constants/viewConstants";
+import { AppContext } from "react-native-easystore";
+import mock from "../../../mock";
 class MailList extends React.PureComponent {
   constructor(props) {
     super(props);
     this.mailServiceManager = new MailServiceManager();
-    this.state = { mailList: [], isLoading: false };
+    this.state = {
+      mailList: [],
+      isLoading: false,
+      selectedItem: "",
+      refreshList: false
+    };
   }
 
-  componentDidMount() {
+  _listRefresher = () => {
+    return Math.random(10);
+  };
+
+  mailListTrigger = (currentContext, appContext) => {
+    if (appContext.refreshEmailList) {
+      //refresh the displayed list here
+      this.state.mailList.forEach(element => {
+        element.uid == appContext.selectedMail.uid
+          ? (element.isMarkedRead = appContext.selectedMail.isMarkedRead)
+          : null;
+      });
+      currentContext.setState({
+        mailList: this.state.mailList,
+        refreshList: this._listRefresher()
+      });
+      appContext.refreshEmailList = false;
+      AppContext.setAppContext(appContext);
+    }
+  };
+
+  componentDidMount = () => {
+    this._loadAllMails();
+    this.mailListListener = AppContext.initializeEventActivityListeners(
+      this,
+      this.mailListTrigger
+    );
+  };
+
+  componentWillUnmount = () => {
+    AppContext.removeEventActivityListeners(this.mailListListener);
+  };
+
+  _loadAllMails = () => {
     this.setState({ isLoading: true });
     this.mailServiceManager.getAllMails().then(
       res => {
@@ -44,88 +84,200 @@ class MailList extends React.PureComponent {
         });
       }
     );
-  }
+  };
 
   _renderMailListItem = ({ item }) => {
+    let backgroundColor = null;
+    let textColor = AppColors.primaryFontColor;
+    let IconTintColor = AppColors.greenColor;
+    let IconName = "email-open";
+    if (item.isMarkedRead) {
+      IconName = "email";
+      IconTintColor = AppColors.primary;
+    }
+    if (this.state.selectedItem.uid == item.uid) {
+      backgroundColor = "#4b7bec";
+      textColor = AppColors.whiteColor;
+      IconTintColor = "white";
+    }
     return (
       <ListItem
+        noIndent
         button
         avatar
+        style={{ backgroundColor: backgroundColor }}
         onPress={() => {
-          alert("pressed");
+          this.setState({
+            selectedItem: item,
+            refreshList: this._listRefresher()
+          });
+          let appContext = AppContext.getAppContext();
+          appContext.selectedMail = item;
+          AppContext.setAppContext(appContext);
         }}
       >
-        <Left>
-          <Icon
-            name="email"
-            type="MaterialCommunityIcons"
-            style={{ color: AppColors.primary }}
-          />
-        </Left>
+        <Icon
+          name={IconName}
+          type="MaterialCommunityIcons"
+          style={{ color: IconTintColor, fontSize: totalSize(3) }}
+        />
         <Body>
-          <Text>{item.sender}</Text>
-          <Text note>{item.subject}</Text>
+          <Text
+            style={{
+              fontSize: totalSize(2),
+              color: textColor,
+              fontWeight: "400",
+              fontFamily: AppFonts.primaryFontFamily
+            }}
+            numberOfLines={1}
+            ellipsizeMode={"tail"}
+          >
+            {item.sender}
+          </Text>
+          <Text
+            note
+            style={{
+              fontSize: totalSize(1.5),
+              fontFamily: AppFonts.primaryFontFamily,
+              color: textColor
+            }}
+            numberOfLines={1}
+            ellipsizeMode={"tail"}
+          >
+            {item.subject}
+          </Text>
         </Body>
         <Right>
-          <Text note>{DateUtil.convertTime(item.time_sent)}</Text>
+          <Text
+            note
+            style={{
+              fontFamily: AppFonts.primaryFontFamily,
+              color: textColor
+            }}
+          >
+            {DateUtil.convertTimeInMillisToDateFormat(item.time_sent)}
+          </Text>
         </Right>
       </ListItem>
     );
   };
 
   _renderMailList = () => {
-    let mailListComponent = null;
-
-    this.state.mailList.length > 0
-      ? (mailListComponent = (
-          <CardItem cardBody>
-            <FlatList
-              data={this.state.mailList}
-              keyExtractor={(item, index) => item.uid.toString()}
-              renderItem={this._renderMailListItem}
-            />
-          </CardItem>
-        ))
-      : (mailListComponent = (
-          <CardItem
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
-            <Text>You do not have any mails as yet!</Text>
-          </CardItem>
-        ));
-
-    return mailListComponent;
+    return (
+      <CardItem cardBody style={{ flex: 1 }}>
+        <FlatList
+          data={this.state.mailList}
+          extraData={this.state.refreshList}
+          keyExtractor={(item, index) => item.uid.toString()}
+          renderItem={this._renderMailListItem}
+          removeClippedSubviews={true}
+          ListEmptyComponent={() => {
+            return (
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <Text
+                  note
+                  style={{
+                    fontSize: totalSize(1.5),
+                    fontFamily: AppFonts.primaryFontFamily
+                  }}
+                >
+                  You do not have any mails as yet!
+                </Text>
+              </View>
+            );
+          }}
+          ListHeaderComponent={() => {
+            return (
+              <CardItem>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Icon
+                    name="email"
+                    type="MaterialCommunityIcons"
+                    style={{ color: AppColors.primary }}
+                  />
+                  <Text
+                    style={{
+                      color: AppColors.primaryFontColor,
+                      fontFamily: AppFonts.primaryFontFamily,
+                      fontSize: totalSize(1.2),
+                      fontWeight: "500"
+                    }}
+                  >
+                    {ViewConstants.LABELS.MAIL_LIST_COMPONENT.READ_HEADING}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginLeft: width(5)
+                  }}
+                >
+                  <Icon
+                    name="email-open"
+                    type="MaterialCommunityIcons"
+                    style={{ color: AppColors.greenColor }}
+                  />
+                  <Text
+                    style={{
+                      color: AppColors.primaryFontColor,
+                      fontFamily: AppFonts.primaryFontFamily,
+                      fontSize: totalSize(1.2),
+                      fontWeight: "500"
+                    }}
+                  >
+                    {ViewConstants.LABELS.MAIL_LIST_COMPONENT.UNREAD_HEADING}
+                  </Text>
+                </View>
+              </CardItem>
+            );
+          }}
+        />
+      </CardItem>
+    );
   };
 
   _loader = () => {
     return this.state.isLoading ? (
       <Loader
-        loadingText="Syncing Mail"
+        loadingText={ViewConstants.LABELS.MAIL_LIST_COMPONENT.LOADER_TEXT}
         spinnerColor={AppColors.primary}
         loadingTextColor={AppColors.primary}
       />
     ) : null;
   };
 
+  _renderCardHeader = () => {
+    return (
+      <CardItem header style={{ backgroundColor: AppColors.secondary }}>
+        <Icon
+          name="email"
+          type="MaterialCommunityIcons"
+          style={{ color: AppColors.primary }}
+        />
+        <Text
+          style={{
+            color: AppColors.primaryFontColor,
+            fontFamily: AppFonts.primaryFontFamily,
+            fontSize: totalSize(1.8),
+            fontWeight: "500"
+          }}
+        >
+          {ViewConstants.LABELS.MAIL_LIST_COMPONENT.HEADER}
+        </Text>
+      </CardItem>
+    );
+  };
+
   render() {
     return (
-      <Card style={{ flex: 2 }}>
-        <CardItem header style={{ backgroundColor: AppColors.secondary }}>
-          <Icon
-            name="email"
-            type="MaterialCommunityIcons"
-            style={{ color: AppColors.primary }}
-          />
-          <Text
-            style={{
-              color: AppColors.primaryFontColor,
-              fontFamily: AppFonts.primaryFontFamily,
-              fontSize: totalSize(1.8)
-            }}
-          >
-            {ViewConstants.LABELS.MAIL_LIST_COMPONENT.HEADER}
-          </Text>
-        </CardItem>
+      <Card style={this.props.style}>
+        {this._renderCardHeader()}
         {this._renderMailList()}
         {this._loader()}
       </Card>

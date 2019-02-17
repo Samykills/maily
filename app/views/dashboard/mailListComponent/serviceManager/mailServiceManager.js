@@ -10,7 +10,10 @@ class MailServiceManager {
       this.mailService.getAllMails().then(
         res => {
           if (res.status == 200) {
-            resolve(res.data.messages);
+            //add ismarkedRead thing as well
+            let results = res.data.messages;
+            this._processReceivedMails(results);
+            resolve(results);
           } else {
             res.data ? reject(res.data.message) : reject(res.problem);
           }
@@ -19,6 +22,12 @@ class MailServiceManager {
           reject(err);
         }
       );
+    });
+  }
+
+  _processReceivedMails(mailList) {
+    mailList.forEach(element => {
+      element.isMarkedRead = false;
     });
   }
 }
