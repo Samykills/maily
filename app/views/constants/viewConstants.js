@@ -7,6 +7,10 @@ const ViewConstants = {
       LOADER_TEXT: "Syncing Mail...",
       READ_HEADING: "Read",
       UNREAD_HEADING: "Unread"
+    },
+    CONTENT_COMPONENT: {
+      HEADER: "Content",
+      INITIAL_MESSAGE: "Click on mails above to view the content"
     }
   }
 };
