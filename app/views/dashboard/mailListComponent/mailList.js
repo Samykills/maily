@@ -96,9 +96,8 @@ class MailList extends React.PureComponent {
       IconTintColor = AppColors.primary;
     }
     if (this.state.selectedItem.uid == item.uid) {
-      backgroundColor = "#4b7bec";
-      textColor = AppColors.whiteColor;
-      IconTintColor = "white";
+      backgroundColor = AppColors.selectionColor;
+      IconTintColor = textColor = AppColors.whiteColor;
     }
     return (
       <ListItem
@@ -162,6 +161,77 @@ class MailList extends React.PureComponent {
     );
   };
 
+  _renderEmptyListComponent = () => {
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
+        <Text
+          note
+          style={{
+            fontSize: totalSize(1.5),
+            fontFamily: AppFonts.primaryFontFamily
+          }}
+        >
+          You do not have any mails as yet!
+        </Text>
+      </View>
+    );
+  };
+
+  _renderHeaderLegendComponent = (iconName, iconColor, heading, margin = 0) => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginLeft: margin
+        }}
+      >
+        <Icon
+          name={iconName}
+          type="MaterialCommunityIcons"
+          style={{ color: iconColor }}
+        />
+        <Text
+          style={{
+            color: AppColors.primaryFontColor,
+            fontFamily: AppFonts.primaryFontFamily,
+            fontSize: totalSize(1.2),
+            fontWeight: "500"
+          }}
+        >
+          {heading}
+        </Text>
+      </View>
+    );
+  };
+
+  _renderListHeaderComponent = () => {
+    let header = null;
+    if (this.state.mailList.length > 0) {
+      header = (
+        <CardItem>
+          {this._renderHeaderLegendComponent(
+            "email",
+            AppColors.primary,
+            ViewConstants.LABELS.MAIL_LIST_COMPONENT.READ_HEADING
+          )}
+          {this._renderHeaderLegendComponent(
+            "email-open",
+            AppColors.greenColor,
+            ViewConstants.LABELS.MAIL_LIST_COMPONENT.UNREAD_HEADING,
+            width(5)
+          )}
+        </CardItem>
+      );
+    }
+    return header;
+  };
+
   _renderMailList = () => {
     return (
       <CardItem cardBody style={{ flex: 1 }}>
@@ -171,72 +241,8 @@ class MailList extends React.PureComponent {
           keyExtractor={(item, index) => item.uid.toString()}
           renderItem={this._renderMailListItem}
           removeClippedSubviews={true}
-          ListEmptyComponent={() => {
-            return (
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <Text
-                  note
-                  style={{
-                    fontSize: totalSize(1.5),
-                    fontFamily: AppFonts.primaryFontFamily
-                  }}
-                >
-                  You do not have any mails as yet!
-                </Text>
-              </View>
-            );
-          }}
-          ListHeaderComponent={() => {
-            return (
-              <CardItem>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Icon
-                    name="email"
-                    type="MaterialCommunityIcons"
-                    style={{ color: AppColors.primary }}
-                  />
-                  <Text
-                    style={{
-                      color: AppColors.primaryFontColor,
-                      fontFamily: AppFonts.primaryFontFamily,
-                      fontSize: totalSize(1.2),
-                      fontWeight: "500"
-                    }}
-                  >
-                    {ViewConstants.LABELS.MAIL_LIST_COMPONENT.READ_HEADING}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginLeft: width(5)
-                  }}
-                >
-                  <Icon
-                    name="email-open"
-                    type="MaterialCommunityIcons"
-                    style={{ color: AppColors.greenColor }}
-                  />
-                  <Text
-                    style={{
-                      color: AppColors.primaryFontColor,
-                      fontFamily: AppFonts.primaryFontFamily,
-                      fontSize: totalSize(1.2),
-                      fontWeight: "500"
-                    }}
-                  >
-                    {ViewConstants.LABELS.MAIL_LIST_COMPONENT.UNREAD_HEADING}
-                  </Text>
-                </View>
-              </CardItem>
-            );
-          }}
+          ListEmptyComponent={this._renderEmptyListComponent()}
+          ListHeaderComponent={this._renderListHeaderComponent()}
         />
       </CardItem>
     );
@@ -258,7 +264,7 @@ class MailList extends React.PureComponent {
         <Icon
           name="email"
           type="MaterialCommunityIcons"
-          style={{ color: AppColors.primary }}
+          style={{ color: AppColors.selectionColor }}
         />
         <Text
           style={{
