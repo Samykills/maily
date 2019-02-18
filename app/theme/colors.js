@@ -6,7 +6,8 @@ const AppColors = {
   whiteColor: "#FFFFFF",
   blackColor: "#000000",
   greenColor:"#20bf6b",
-  selectionColor:"#4b7bec"
+  selectionColor:"#4b7bec",
+  greyColor:"#778ca3"
 };
 
 export default AppColors;

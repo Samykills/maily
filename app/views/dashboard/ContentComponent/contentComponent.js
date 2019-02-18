@@ -30,23 +30,6 @@ class ContentComponent extends React.PureComponent {
     AppContext.removeEventActivityListeners(this.nativeUiListener);
   };
 
-  _toggleMarkAsRead = value => {
-    if (value) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  _onPressToggleReadButton = () => {
-    let appContext = AppContext.getAppContext();
-    appContext.selectedMail.isMarkedRead = this._toggleMarkAsRead(
-      appContext.selectedMail.isMarkedRead
-    );
-    appContext.refreshEmailList = true;
-    AppContext.setAppContext(appContext);
-  };
-
   _renderContentHeader = () => {
     return (
       <CardItem header style={{ backgroundColor: AppColors.secondary }}>
@@ -73,7 +56,9 @@ class ContentComponent extends React.PureComponent {
     let contentBody = this.state.mail ? (
       <ContentView
         style={{ flex: 1 }}
-        buttonColor={AppColors.greenColor}
+        buttonColor={
+          this.state.isMarkedRead ? AppColors.greyColor : AppColors.greenColor
+        }
         buttonText={this.state.isMarkedRead ? "mark as Unread" : "mark as read"}
         text={this.state.mail.message}
         textSize={totalSize(2)}

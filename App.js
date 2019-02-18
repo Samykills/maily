@@ -18,12 +18,12 @@ import {
 import AppRouter from "./app/appRouter";
 import { AppColors } from "theme";
 import { Root } from "native-base";
-import { AppContext } from "react-native-easystore";
-import AppContextStore from "appStore";
+import AppInitializationService from "./app/service/appInitializationService";
 
-(initalizeAppStore => {
-  AppContext.setAppContext(AppContextStore);
+(initalizeApp => {
+  AppInitializationService.initalizeApp();
 })();
+
 const STATUSBAR_HEIGHT = StatusBar.currentHeight;
 const StatusBarComponent = () => {
   return Platform.OS == "ios" ? (
