@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
+    
     "debug-android": "cd android && ./gradlew clean && cd .. && react-native run-android",
     "release-android": "cd android && ./gradlew clean &&./gradlew assembleRelease && cd .."
   },
@@ -26,6 +27,9 @@
     "react-test-renderer": "16.6.3"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!native-base)/"
+    ]
   }
 }

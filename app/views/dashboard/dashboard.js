@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import SplashScreen from "react-native-splash-screen";
 import MailList from "./mailListComponent/mailList";
-import ContentComponent from "./ContentComponent/contentComponent";
+import ContentComponent from "./contentComponent/contentComponent";
 import { width, height } from "react-native-dimension";
 class Dashboard extends React.PureComponent {
   componentDidMount() {
