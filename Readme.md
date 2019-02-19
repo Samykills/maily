@@ -1,3 +1,5 @@
+[![Build status](https://build.appcenter.ms/v0.1/apps/edd9b357-3ecc-4229-9fcf-9e2bd123cbc8/branches/master/badge)](https://appcenter.ms)
+
 ##Getting Started
 
 This is a mail client built using react-native for Android. The app has two views on a single screen.
