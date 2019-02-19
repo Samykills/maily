@@ -1,0 +1,20 @@
+PODS:
+  - AppCenter/Core (1.13.0)
+  - AppCenterReactNativeShared (1.12.0):
+    - AppCenter/Core (= 1.13.0)
+
+DEPENDENCIES:
+  - AppCenterReactNativeShared (~> 1.12.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AppCenter
+    - AppCenterReactNativeShared
+
+SPEC CHECKSUMS:
+  AppCenter: a70408f15de23f925001bfc7b7473094a009a4eb
+  AppCenterReactNativeShared: 542de3c68bcec89fba964213048287592a443976
+
+PODFILE CHECKSUM: 1abffe51b225a066af83f335cce2631f28812b68
+
+COCOAPODS: 1.5.3

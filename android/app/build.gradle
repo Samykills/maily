@@ -144,6 +144,7 @@ android {
 }
 
 dependencies {
+    implementation project(':appcenter')
     implementation project(':react-native-content-view')
     implementation project(':react-native-splash-screen')
     implementation fileTree(dir: "libs", include: ["*.jar"])
