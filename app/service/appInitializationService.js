@@ -1,5 +1,5 @@
 import BatchedBridge from "react-native/Libraries/BatchedBridge/BatchedBridge";
-import LinkerUtil from "../views/dashboard/contentComponent/util/linkerUtil";
+import LinkerUtil from "../views/dashboard/ContentComponent/util/linkerUtil";
 import { AppContext } from "react-native-easystore";
 import AppContextStore from "appStore";
 import SplashScreen from "react-native-splash-screen";
