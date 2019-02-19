@@ -34,7 +34,7 @@ class ContentComponent extends React.PureComponent {
     return (
       <CardItem header style={{ backgroundColor: AppColors.secondary }}>
         <Icon
-          name="email"
+          name="information"
           type="MaterialCommunityIcons"
           style={{ color: AppColors.selectionColor }}
         />
@@ -59,7 +59,11 @@ class ContentComponent extends React.PureComponent {
         buttonColor={
           this.state.isMarkedRead ? AppColors.greyColor : AppColors.greenColor
         }
-        buttonText={this.state.isMarkedRead ? "mark as Unread" : "mark as read"}
+        buttonText={
+          this.state.isMarkedRead
+            ? ViewConstants.LABELS.CONTENT_COMPONENT.MARK_AS_UNREAD
+            : ViewConstants.LABELS.CONTENT_COMPONENT.MARK_AS_READ
+        }
         text={this.state.mail.message}
         textSize={totalSize(2)}
         buttonTextColor={AppColors.whiteColor}
@@ -83,8 +87,8 @@ class ContentComponent extends React.PureComponent {
 
   render() {
     return (
-      <Card style={this.props.style}>
-        {this._renderContentHeader()}
+      <Card style={[this.props.style]}>
+        {/* {this._renderContentHeader()} */}
         {this._renderContentBody()}
       </Card>
     );

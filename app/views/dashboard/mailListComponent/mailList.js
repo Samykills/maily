@@ -18,7 +18,6 @@ import { totalSize, width, height } from "react-native-dimension";
 import { Loader, DateUtil, Touchable } from "uRnFramework-basic-components";
 import ViewConstants from "../../constants/viewConstants";
 import { AppContext } from "react-native-easystore";
-import mock from "../../../mock";
 class MailList extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -176,7 +175,7 @@ class MailList extends React.PureComponent {
             fontFamily: AppFonts.primaryFontFamily
           }}
         >
-          You do not have any mails as yet!
+          {ViewConstants.LABELS.MAIL_LIST_COMPONENT.NO_EMAIL}
         </Text>
       </View>
     );
