@@ -1,7 +1,7 @@
-#Maily
+# Maily
 [![Build status](https://build.appcenter.ms/v0.1/apps/edd9b357-3ecc-4229-9fcf-9e2bd123cbc8/branches/master/badge)](https://appcenter.ms)
 
-##Getting Started
+## Getting Started
 
 This is a mail client built using react-native for Android. The app has two views on a single screen.
 The navigation view is a pure react-component and is called the "MailList" component which is responsible for loading the List of emails.
@@ -15,13 +15,13 @@ The app uses "react-native-easystore" to create and manage the shared store i.e 
 
 The app also uses another custom framework called "uRnFramework-basic-components" which host a lot of commonly used code and dependecies for general component creation.
 
-##How it all works:
+## How it all works:
 
 A User can navigate through his/her mails.
 The selected mail is highlighted and the user can see the content of the mail on the ContentComponent along with a button to mark the mail as read/Unread.
 The button press action results in a store update which in turns re-renders the UI for both the Components(Maillist and ContentComponent) as the components are subscribed to the store change events.
 
-#How is the native code linked to react-native?
+# How is the native code linked to react-native?
 
 Native code can be used with react-native using react-native-bridge.
 This bridge provides a means for the javaScript realm and the native code realm to talk to one another.This is also how the react-native uses JSX to render the Native UI, thus giving us the native feel through JS code.
@@ -36,11 +36,11 @@ The promise and callbacks are two popular ways through which native code can cal
 In the app i have shown a demostration of using a batched bridge, which calls the JS calls "LinkerUtil's" specified method on click of the button.
 This action executes the JS code and updates the store, which inturn results in re-render of the speicific's of the components.
 
-##IOS 
+## IOS 
 
 The app will run and work on IOS, however it will fail when we click on the mailItem of the mailList as the IOS-native component is not yet written.
 
-##Android 
+## Android 
 
 To build the app on android please follow these steps:
 1. Clone the project.
